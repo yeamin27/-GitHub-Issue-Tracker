@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GitHub Issue Tracker</string>
+    <string name="url_input_hint_msg">Enter the github url to view issues:</string>
+    <string name="search">Search</string>
+    <string name="loading_issues">Loading Issues…</string>
+    <string name="issue_number">#%d</string>
+    <string name="created_by">by %s</string>
+    <string name="url_hint">github.com/user/repo</string>
+    <string name="url_input_error">Please enter a valid url!</string>
 </resources>

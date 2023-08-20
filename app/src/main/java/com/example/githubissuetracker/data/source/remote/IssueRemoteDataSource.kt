@@ -25,18 +25,18 @@ class IssueRemoteDataSource(private val githubService: GithubService) : IssueDat
     ): NetworkResult<List<Issue>> {
         return try {
             val response = githubService.getIssues(user, repo)
-
+            Log.d(TAG, "getIssueList: ${response.code()} ${response.message()}")
             if (response.isSuccessful && response.body() != null) {
                 NetworkResult.Success(response.body()!!)
             } else {
-                NetworkResult.Error(code = response.code(), message = response.message())
+                var message = response.message()
+                if (response.code() == 404)
+                    message = "No repository found!"
+                NetworkResult.Error(code = response.code(), message = message)
             }
         } catch (ex: Exception) {
+            Log.e(TAG, "getIssueList: ", ex)
             NetworkResult.Exception(ex)
         }
-    }
-
-    override suspend fun getIssue(): NetworkResult<Issue> {
-        TODO("Not yet implemented")
     }
 }

@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#C87D7D7D</color>
     <color name="error">#C8D22F2F</color>
+    <color name="text_color_muted">#7D8386</color>
+    <color name="state_closed">#A371F7</color>
+    <color name="state_open">#3FB950</color>
 </resources>

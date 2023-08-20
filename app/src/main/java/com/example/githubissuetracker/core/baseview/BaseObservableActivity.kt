@@ -7,15 +7,15 @@ abstract class BaseObservableActivity<V : ViewBinding, ListenerType>(inflater: I
 
     private val listeners = hashSetOf<ListenerType>()
 
-    fun notify(data: (ListenerType) -> Unit) {
+    protected fun notify(data: (ListenerType) -> Unit) {
         listeners.forEach(data)
     }
 
-    fun registerObserver(it: ListenerType) {
+    protected fun registerObserver(it: ListenerType) {
         if (listeners.contains(it).not()) listeners.add(it)
     }
 
-    fun unRegisterObserver(it: ListenerType) {
+    protected fun unRegisterObserver(it: ListenerType) {
         if (listeners.contains(it)) listeners.remove(it)
     }
 

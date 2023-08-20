@@ -17,7 +17,7 @@ typealias InflateFragment<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 abstract class BaseFragment<V : ViewBinding>(private val inflater: InflateFragment<V>) :
     Fragment() {
     private var _binding: V? = null
-    val binding: V? get() = _binding
+    protected val binding: V? get() = _binding
     var idTag: String = ""
 
     open val screenName: String? = null

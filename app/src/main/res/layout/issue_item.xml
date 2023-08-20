@@ -5,23 +5,25 @@
     android:id="@+id/individual_"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#333333"
-    android:padding="12dp">
+    android:paddingVertical="12dp"
+    android:background="#333333">
 
     <ImageView
         android:id="@+id/iv_state_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        tools:src="@drawable/ic_dot_in_circle_16"
+        android:layout_marginStart="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_title" />
+        app:layout_constraintTop_toTopOf="@+id/tv_title"
+        tools:src="@drawable/ic_dot_in_circle_16" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="@color/white"
@@ -46,12 +48,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="12dp"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@id/tv_issue_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_issue_number"
         app:layout_constraintTop_toTopOf="@+id/tv_issue_number"
         tools:text="by Yeamin Chowdhuryby Yeamin Chowdhuryby Yeamin Chowdhuryby Yeamin Chowdhury" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/heading_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        app:dividerColor="@color/text_color_muted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_issue_creator" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

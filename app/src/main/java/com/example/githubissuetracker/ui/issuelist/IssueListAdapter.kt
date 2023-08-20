@@ -14,11 +14,17 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.ViewHolder>() {
         private const val TAG = "IssueListAdapter"
     }
 
+    interface Listener {
+        fun onSelected(issue: Issue)
+    }
+
     var items: List<Issue>? = null
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
+    var listener: Listener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = IssueItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,7 +38,7 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.ViewHolder>() {
 
     override fun getItemCount() = items?.size ?: 0
 
-    class ViewHolder(private val binding: IssueItemBinding) :
+    inner class ViewHolder(private val binding: IssueItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(issue: Issue) {
             Log.d(TAG, "bind: ${issue.title}")
@@ -50,6 +56,10 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.ViewHolder>() {
                     .with(binding.ivStateIcon)
                     .load(R.drawable.ic_tick_in_circle_16)
                     .into(binding.ivStateIcon);
+            }
+
+            binding.root.setOnClickListener {
+                listener?.onSelected(issue)
             }
         }
     }

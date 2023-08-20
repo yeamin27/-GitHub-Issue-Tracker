@@ -23,8 +23,4 @@ class IssueRepository private constructor(
     override suspend fun getIssueList(user: String, repo: String): NetworkResult<List<Issue>> {
         return remoteDataSource.getIssueList(user, repo)
     }
-
-    override suspend fun getIssue(): NetworkResult<Issue> {
-        return remoteDataSource.getIssue()
-    }
 }

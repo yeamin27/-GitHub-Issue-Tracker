@@ -13,7 +13,7 @@ typealias InflateActivity<T> = (LayoutInflater) -> T
 abstract class BaseActivity<V : ViewBinding>(private val inflater: InflateActivity<V>) :
     AppCompatActivity() {
     private var _binding: V? = null
-    val binding: V? get() = _binding
+    protected val binding: V? get() = _binding
 
     protected abstract fun initView(savedInstanceState: Bundle?)
 

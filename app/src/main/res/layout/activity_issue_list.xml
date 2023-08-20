@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#333333"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="#333333">
 
     <EditText
         android:id="@+id/et_search_field"
@@ -28,19 +28,24 @@
         app:layout_constraintStart_toEndOf="@+id/et_search_field"
         app:layout_constraintTop_toTopOf="@id/et_search_field" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grp_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="et_search_field,btn_search" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_issues"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/issue_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search_field" />
+        app:layout_constraintTop_toBottomOf="@+id/et_search_field"
+        tools:listitem="@layout/issue_item" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/content"
@@ -48,10 +53,28 @@
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="et_search_field, btn_search, rv_issues" />
 
+    <TextView
+        android:id="@+id/tv_error_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/white"
         app:layout_constraintBottom_toTopOf="@id/tv_loading_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +90,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/loading_issues"
         android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,9 +99,16 @@
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/loading_indicator"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:constraint_referenced_ids="progress_circular,tv_loading_hint" />
+
+    <FrameLayout
+        android:id="@+id/details_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,12 +21,19 @@ class IssueListViewModel(
         private const val TAG = "IssueListViewModel"
     }
 
+    private val _resultState = MutableLiveData<NetworkResult<List<Issue>>?>()
+    val resultState: LiveData<NetworkResult<List<Issue>>?>
+        get() = _resultState
+
     private val _issueList = MutableLiveData<List<Issue>>(emptyList())
     val issueList: LiveData<List<Issue>>
         get() = _issueList
 
+    private val _selectedIssue = MutableLiveData<Issue?>(null)
+    val selectedIssue: LiveData<Issue?>
+        get() = _selectedIssue
+
     init {
-        Log.d(TAG, "Init: fetching issues")
         loadIssues()
     }
 
@@ -34,22 +41,17 @@ class IssueListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             setLoadingAsync(true)
             _issueList.postValue(emptyList())
-            Log.d(TAG, "loadIssues: fetching")
-            when (val result = repository.getIssueList(user, repo)) {
-                is NetworkResult.Success -> {
-                    Log.d(TAG, "loadIssues: ${result.data.size}")
-                    _issueList.postValue(result.data)
-                }
+            val result = repository.getIssueList(user, repo)
+            _resultState.postValue(result)
 
-                is NetworkResult.Error -> {
-                    Log.d(TAG, "loadIssues: ${result.code} ${result.message}")
-                }
-
-                is NetworkResult.Exception -> {
-                    Log.e(TAG, "loadIssues: ", result.e)
-                }
+            if (result is NetworkResult.Success) {
+                _issueList.postValue(result.data)
             }
             setLoadingAsync(false)
         }
+    }
+
+    fun setSelectedIssue(issue: Issue?) {
+        _selectedIssue.value = issue
     }
 }

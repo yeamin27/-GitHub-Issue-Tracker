@@ -11,6 +11,7 @@ interface GithubService {
     suspend fun getIssues(
         @Path("user") user: String,
         @Path("repo") repo: String,
-        @Query("state") state: String = "all"
+        @Query("type") type: String = "issue",
+        @Query("state") state: String = "all",
     ): Response<List<Issue>>
 }

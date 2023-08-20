@@ -5,4 +5,6 @@ object EndPoints {
 
     const val ISSUES = "/repos/{user}/{repo}/issues"
 
+    const val ISSUE_COUNT = "/search/issues?q=repo:{user}/{repo}%20is:issue"
+
 }

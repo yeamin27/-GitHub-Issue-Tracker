@@ -2,6 +2,7 @@ package com.example.githubissuetracker.data.repository
 
 import com.example.githubissuetracker.core.networking.NetworkResult
 import com.example.githubissuetracker.data.model.Issue
+import com.example.githubissuetracker.data.model.SearchResult
 
 
 class IssueRepository private constructor(
@@ -22,5 +23,13 @@ class IssueRepository private constructor(
 
     override suspend fun getIssueList(user: String, repo: String): NetworkResult<List<Issue>> {
         return remoteDataSource.getIssueList(user, repo)
+    }
+
+    override suspend fun searchIssues(
+        searchTerm: String,
+        user: String,
+        repo: String
+    ): NetworkResult<SearchResult> {
+        return remoteDataSource.searchIssues(searchTerm, user, repo)
     }
 }

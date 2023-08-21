@@ -9,6 +9,7 @@ import com.example.githubissuetracker.core.networking.NetworkResult
 import com.example.githubissuetracker.data.model.Issue
 import com.example.githubissuetracker.data.repository.IssueRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class IssueListViewModel(
@@ -37,8 +38,11 @@ class IssueListViewModel(
         loadIssues()
     }
 
+    private var job: Job? = null
+
     private fun loadIssues() {
-        viewModelScope.launch(Dispatchers.IO) {
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
             setLoadingAsync(true)
             _issueList.postValue(emptyList())
             val result = repository.getIssueList(user, repo)
@@ -46,6 +50,33 @@ class IssueListViewModel(
 
             if (result is NetworkResult.Success) {
                 _issueList.postValue(result.data)
+            }
+            setLoadingAsync(false)
+        }
+    }
+
+    fun search(searchTerm: String?) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            loadIssues()
+            return
+        }
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            setLoadingAsync(true)
+            _issueList.postValue(emptyList())
+
+            when (val result = repository.searchIssues(searchTerm, user, repo)) {
+                is NetworkResult.Success -> {
+                    _issueList.postValue(result.data.items!!)
+                }
+
+                is NetworkResult.Error -> {
+                    _resultState.postValue(NetworkResult.Error(result.code, result.message))
+                }
+
+                is NetworkResult.Exception -> {
+                    _resultState.postValue(NetworkResult.Exception(result.e))
+                }
             }
             setLoadingAsync(false)
         }

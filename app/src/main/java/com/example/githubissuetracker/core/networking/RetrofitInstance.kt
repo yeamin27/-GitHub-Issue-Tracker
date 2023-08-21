@@ -2,6 +2,7 @@ package com.example.githubissuetracker.core.networking
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -9,10 +10,14 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitInstance {
+    private val logInterceptor = HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY)
+
     private val okHttpClient = OkHttpClient
         .Builder()
         .readTimeout(15, TimeUnit.SECONDS)
         .connectTimeout(15, TimeUnit.SECONDS)
+        .addInterceptor(logInterceptor)
         .build()
 
     private val gson = GsonBuilder()

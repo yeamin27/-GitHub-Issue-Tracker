@@ -41,7 +41,6 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: IssueItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(issue: Issue) {
-            Log.d(TAG, "bind: ${issue.title}")
             binding.tvTitle.text = issue.title
             binding.tvIssueNumber.text = binding.tvIssueNumber.context.getString(R.string.issue_number, issue.number)
             binding.tvIssueCreator.text = binding.tvIssueNumber.context.getString(R.string.created_by, issue.user?.login)

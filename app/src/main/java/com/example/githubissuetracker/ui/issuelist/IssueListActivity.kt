@@ -34,17 +34,19 @@ class IssueListActivity :
         adapter.listener = this
         binding?.rvIssues?.adapter = adapter
 
-        viewModel.resultState.subscribe {result->
+        viewModel.resultState.subscribe { result ->
             result?.let {
-                when(it) {
+                when (it) {
                     is NetworkResult.Error -> {
                         binding?.tvErrorHint?.text = it.message
                         binding?.tvErrorHint?.visibility = View.VISIBLE
                     }
+
                     is NetworkResult.Exception -> {
                         binding?.tvErrorHint?.text = getString(R.string.no_internet)
                         binding?.tvErrorHint?.visibility = View.VISIBLE
                     }
+
                     is NetworkResult.Success -> {
                         binding?.tvErrorHint?.visibility = View.GONE
                     }
@@ -53,17 +55,29 @@ class IssueListActivity :
         }
 
         viewModel.issueList.subscribe { issues ->
-            adapter.items = issues
+            if (issues.isEmpty()) {
+                binding?.rvIssues?.visibility = View.GONE
+                binding?.tvErrorHint?.text = getString(R.string.no_issue_found)
+            } else {
+                adapter.items = issues
+                binding?.rvIssues?.visibility = View.VISIBLE
+                binding?.tvErrorHint?.visibility = View.GONE
+            }
         }
 
         viewModel.isLoading.subscribe { isLoading ->
             if (isLoading) {
+                binding?.tvErrorHint?.visibility = View.GONE
                 binding?.content?.visibility = View.GONE
                 binding?.loadingIndicator?.visibility = View.VISIBLE
             } else {
-                binding?.content?.visibility = View.VISIBLE
                 binding?.loadingIndicator?.visibility = View.GONE
+                binding?.content?.visibility = View.VISIBLE
             }
+        }
+
+        binding?.btnSearch?.onClick {
+            viewModel.search(binding?.etSearchField?.text.toString())
         }
     }
 

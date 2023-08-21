@@ -1,13 +1,13 @@
 package com.example.githubissuetracker.ui.issuelist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.githubissuetracker.core.baseview.BaseViewModel
 import com.example.githubissuetracker.core.networking.NetworkResult
 import com.example.githubissuetracker.data.model.Issue
-import com.example.githubissuetracker.data.repository.IssueRepository
+import com.example.githubissuetracker.data.model.IssueListResponse
+import com.example.githubissuetracker.data.repository.IssueRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -15,20 +15,25 @@ import kotlinx.coroutines.launch
 class IssueListViewModel(
     private val user: String,
     private val repo: String,
-    private val repository: IssueRepository
+    private val repository: IssueRepositoryImpl
 ) : BaseViewModel() {
 
     companion object {
         private const val TAG = "IssueListViewModel"
     }
 
-    private val _resultState = MutableLiveData<NetworkResult<List<Issue>>?>()
-    val resultState: LiveData<NetworkResult<List<Issue>>?>
+    private val _resultState = MutableLiveData<NetworkResult<IssueListResponse>?>()
+    val resultState: LiveData<NetworkResult<IssueListResponse>?>
         get() = _resultState
+    val issueList: List<Issue>
+        get() {
+            if (resultState.value is NetworkResult.Success<IssueListResponse>)
+                return (_resultState.value as NetworkResult.Success<IssueListResponse>).data.issues
+            return emptyList()
+        }
 
-    private val _issueList = MutableLiveData<List<Issue>>(emptyList())
-    val issueList: LiveData<List<Issue>>
-        get() = _issueList
+    var isSearchResult = false
+        private set
 
     private val _selectedIssue = MutableLiveData<Issue?>(null)
     val selectedIssue: LiveData<Issue?>
@@ -44,13 +49,9 @@ class IssueListViewModel(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             setLoadingAsync(true)
-            _issueList.postValue(emptyList())
-            val result = repository.getIssueList(user, repo)
-            _resultState.postValue(result)
-
-            if (result is NetworkResult.Success) {
-                _issueList.postValue(result.data)
-            }
+            isSearchResult = false
+            _resultState.postValue(null)
+            _resultState.postValue(repository.getIssueList(user, repo))
             setLoadingAsync(false)
         }
     }
@@ -63,21 +64,29 @@ class IssueListViewModel(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             setLoadingAsync(true)
-            _issueList.postValue(emptyList())
+            isSearchResult = true
+            _resultState.postValue(null)
+            _resultState.postValue(repository.searchIssues(searchTerm, user, repo))
+            setLoadingAsync(false)
+        }
+    }
 
-            when (val result = repository.searchIssues(searchTerm, user, repo)) {
-                is NetworkResult.Success -> {
-                    _issueList.postValue(result.data.items!!)
-                }
+    fun navigateIssues(url: String) {
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            setLoadingAsync(true)
+            _resultState.postValue(null)
+            _resultState.postValue(repository.navigateIssues(url))
+            setLoadingAsync(false)
+        }
+    }
 
-                is NetworkResult.Error -> {
-                    _resultState.postValue(NetworkResult.Error(result.code, result.message))
-                }
-
-                is NetworkResult.Exception -> {
-                    _resultState.postValue(NetworkResult.Exception(result.e))
-                }
-            }
+    fun navigateSearch(url: String) {
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            setLoadingAsync(true)
+            _resultState.postValue(null)
+            _resultState.postValue(repository.navigateSearch(url))
             setLoadingAsync(false)
         }
     }

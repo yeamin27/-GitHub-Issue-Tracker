@@ -7,4 +7,5 @@
     <color name="text_color_muted">#7D8386</color>
     <color name="state_closed">#A371F7</color>
     <color name="state_open">#3FB950</color>
+    <color name="royal_blue">#2979FF</color>
 </resources>

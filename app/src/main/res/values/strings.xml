@@ -14,4 +14,8 @@
     <string name="url_input_error">Please enter a valid url!</string>
     <string name="issue_info_author_and_date"><strong>%s</strong> opened this on %s</string>
     <string name="lorem_ipsum_paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a dolor eu lorem pretium pulvinar quis ut est. Fusce ullamcorper libero ac dolor tempor, nec consequat nisi ultrices. Donec ipsum ligula, hendrerit eget risus eu, convallis commodo lectus. Duis nec condimentum mauris. Duis vitae dignissim neque. Maecenas eu pulvinar risus. Nulla mauris massa, consectetur et luctus at, fringilla non est. Maecenas sit amet nisi non felis accumsan suscipit in sed nisi. Curabitur egestas, ante in commodo posuere, ex lorem tincidunt nisl, tincidunt fringilla sapien massa quis orci. Proin laoreet vestibulum dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum sodales posuere. Nulla facilisi. Maecenas posuere justo vel ornare hendrerit. Cras vestibulum lacus vel nunc bibendum luctus. Aenean tempor tincidunt erat.</string>
+    <string name="first">First</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="last">Last</string>
 </resources>

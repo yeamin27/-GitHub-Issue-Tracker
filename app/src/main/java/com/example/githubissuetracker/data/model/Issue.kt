@@ -21,7 +21,7 @@ data class Issue(
     @SerializedName("locked") var locked: Boolean? = null,
     @SerializedName("assignee") var assignee: User? = null,
     @SerializedName("assignees") var assignees: List<User>? = null,
-    @SerializedName("milestone") var milestone: String? = null,
+//    @SerializedName("milestone") var milestone: String? = null,
     @SerializedName("comments") var comments: Int? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
